@@ -1,0 +1,62 @@
+@using Microsoft.AspNetCore.Identity
+@using EcommerceWebSite.Identity
+@using System.Text.Json
+@using EcommerceWebSite.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor H
+
+@{
+    // Sepet adedi (Session -> "CART")
+    const string CartSessionKey = "CART";
+    var json  = H.HttpContext?.Session.GetString(CartSessionKey);
+    var count = 0;
+    if (!string.IsNullOrEmpty(json))
+    {
+        var cart = JsonSerializer.Deserialize<Cart>(json) ?? new Cart();
+        count = cart.TotalQuantity;   // Toplam adet
+    }
+}
+
+<ul class="navbar-nav ms-auto my-2 my-lg-0 align-items-center">
+@if (SignInManager.IsSignedIn(User))
+{
+    <!-- Kullanıcı adı -> /Account -->
+    <li class="nav-item">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="Index">
+            @User.Identity!.Name
+        </a>
+    </li>
+
+    <!-- Sepet ikonu -> /Cart/Index -->
+    <li class="nav-item ms-2 me-2">
+        <a class="nav-link cart-link text-white"
+           asp-controller="Cart" asp-action="Index"
+           aria-label="Sepetim"
+           title="Sepetim">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            @if (count > 0)
+            {
+                <span class="badge bg-danger cart-badge">@count</span>
+            }
+            <span class="visually-hidden">Sepette @count ürün</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <form class="d-flex align-items-center" asp-controller="Account" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-link nav-link py-2 px-0 text-white ms-1">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="Register">Register</a>
+    </li>
+}
+</ul>

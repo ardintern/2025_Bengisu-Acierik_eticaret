@@ -1,0 +1,41 @@
+@using EcommerceWebSite.Models
+@model IEnumerable<ProductModel>
+
+@{
+    ViewData["Title"] = "List";
+
+    // RouteData'dan id'yi al (örn. /Home/List/4 -> 4)
+    int? selectedId = null;
+    if (int.TryParse(ViewContext.RouteData.Values["id"]?.ToString(), out var parsed))
+    {
+        selectedId = parsed;
+    }
+}
+
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("Categories", new { selectedId })
+            @* Alternatif (Tag Helper):
+               <vc:categories selected-id="@(selectedId)"></vc:categories> *@
+        </div>
+
+        <div class="col-md-9">
+                @if (Model.Count() == 0)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                    Bu kategoride bir ürün bulunamadı.
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                    <strong>@Model.Count() adet</strong> ürün bulundu.
+                </div>
+            }
+            @await Html.PartialAsync("_ProductList", Model)
+        </div>
+    </div>
+</div>

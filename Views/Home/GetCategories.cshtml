@@ -1,0 +1,43 @@
+@model IEnumerable<EcommerceWebSite.Entity.Category>
+
+@{
+    // route'daki id değerini güvenli biçimde oku
+    var selectedText = ViewContext.RouteData.Values["id"]?.ToString();
+    var hasSelected = int.TryParse(selectedText, out var selectedId);
+}
+
+<ul class="list-group">
+
+    <a href="/Home/List" class="list-group-item">
+        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        Tüm Kategoriler
+    </a>
+
+    @foreach (var item in Model)
+    {
+        if (hasSelected)
+        {
+            if (item.Id == selectedId)
+            {
+                <a href="/Home/List/@item.Id" class="list-group-item active">
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    @item.Name
+                </a>
+            }
+            else
+            {
+                <a href="/Home/List/@item.Id" class="list-group-item">
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    @item.Name
+                </a>
+            }
+        }
+        else
+        {
+            <a href="/Home/List/@item.Id" class="list-group-item">
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                @item.Name
+            </a>
+        }
+    }
+</ul>

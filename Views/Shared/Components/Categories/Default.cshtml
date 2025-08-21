@@ -1,0 +1,20 @@
+@model IEnumerable<EcommerceWebSite.Entity.Category>
+@{
+    int? selectedId = ViewBag.SelectedId as int?;
+}
+
+<ul class="list-group">
+    <a href="/Home/List" class="list-group-item @(selectedId == null ? "active" : "")">
+        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        Tüm Kategoriler
+    </a>
+
+    @foreach (var item in Model)
+    {
+        var active = selectedId == item.Id ? "active" : "";
+        <a href="/Home/List/@item.Id" class="list-group-item @active">
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            @item.Name
+        </a>
+    }
+</ul>

@@ -1,0 +1,47 @@
+@model IEnumerable<EcommerceWebSite.Models.UserOrderModel>
+@{
+    ViewData["Title"] = "Sipariş Bilgileriniz";
+}
+
+<div class="container pb-5">
+    <h2>Sipariş Bilgileriniz</h2>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Geçmiş siparişiniz bulunmuyor.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Sipariş No</th>
+                    <th>Tarih</th>
+                    <th>Toplam</th>
+                    <th>Durum</th>
+                    <th style="width: 120px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OrderNumber</td>
+                    <td>@item.OrderDate.ToString("g")</td>
+                    <td>@item.Total.ToString("c")</td>
+                    <td>@item.OrderState</td>
+                    <td class="text-nowrap">
+                        <a asp-controller="Account"
+                           asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn btn-primary btn-sm">
+                           Detay
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,43 @@
+@model IEnumerable<EcommerceWebSite.Models.AdminOrderModel>
+@{
+    ViewData["Title"] = "Siparişler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container pb-5">
+    <h2>Siparişler</h2>
+    <hr />
+
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Sipariş No</th>
+                <th>Tarih</th>
+                <th>Durum</th>
+                <th>Toplam</th>
+                <th>Ürün Adedi</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.OrderNumber</td>
+                <td>@item.OrderDate.ToString("g")</td>
+                <td>@item.OrderState</td>
+                <td>@item.Total.ToString("c")</td>
+                <td>@item.Count</td>
+                <td class="text-nowrap">
+                    <a asp-controller="Order"
+                       asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-primary btn-sm">Detay</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

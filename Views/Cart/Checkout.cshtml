@@ -1,0 +1,94 @@
+@model EcommerceWebSite.Models.ShippingDetails
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<style>
+    .field-validation-error { color:#f00; }
+    .field-validation-valid { display:none; }
+    .input-validation-error { border:1px solid #f00; background-color:#fee; }
+    .validation-summary-errors { font-weight:bold; color:#f00; }
+    .validation-summary-valid { display:none; }
+</style>
+
+<div class="container py-4">
+    <h2>Sipariş Bilgileriniz</h2>
+    <p class="text-muted">Lütfen sipariş bilgilerinizi doldurunuz.</p>
+    <hr />
+
+    <!-- URL'in /Cart/Checkout olduğu için Cart'a post ediyoruz -->
+    <form asp-controller="Cart" asp-action="Checkout" method="post" class="needs-validation">
+        @Html.AntiForgeryToken()
+
+        <!-- Yalnızca hata varken görünür -->
+        <div asp-validation-summary="All" class="alert alert-danger mb-3"></div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Kullanıcı</label>
+            <div class="col-sm-6 d-flex align-items-center">
+                <span class="badge bg-secondary">@(
+                    User?.Identity?.Name ?? "Misafir"
+                )</span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="AdresBasligi" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-6">
+                <input asp-for="AdresBasligi" class="form-control" />
+                <span asp-validation-for="AdresBasligi" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Adres" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-6">
+                <textarea asp-for="Adres" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="Adres" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Sehir" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-6">
+                <input asp-for="Sehir" class="form-control" />
+                <span asp-validation-for="Sehir" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Semt" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-6">
+                <input asp-for="Semt" class="form-control" />
+                <span asp-validation-for="Semt" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label asp-for="Mahalle" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-6">
+                <input asp-for="Mahalle" class="form-control" />
+                <span asp-validation-for="Mahalle" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <label asp-for="PostaKodu" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-3">
+                <input asp-for="PostaKodu" class="form-control" />
+                <span asp-validation-for="PostaKodu" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="offset-sm-2 col-sm-6">
+                <button type="submit" class="btn btn-primary">Siparişi Tamamla</button>
+                <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary ms-2">Sepete Dön</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

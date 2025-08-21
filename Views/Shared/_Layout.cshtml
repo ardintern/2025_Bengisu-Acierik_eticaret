@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - EcommerceWebSite</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+    <!-- Bootstrap 5 (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet" crossorigin="anonymous" />
+
+    <!-- Proje CSS -->
+    <link rel="stylesheet" href="~/theme/css/style.css" asp-append-version="true" />
+  </head>
+  <body>
+@{
+    // Aktif menü yardımcısı
+    var c = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var a = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    bool Is(string ctrl, string? act = null) =>
+        string.Equals(c, ctrl, StringComparison.OrdinalIgnoreCase) &&
+        (act is null || string.Equals(a, act, StringComparison.OrdinalIgnoreCase));
+}
+    <nav class="navbar navbar-expand-lg bg-primary navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Ürün Katalog</a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarColor02"
+                aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+          <!-- Sol menü -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link @(Is("Home","Index") ? "active fw-semibold" : "")"
+                 asp-controller="Home" asp-action="Index">Anasayfa</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link @(Is("Home","List") ? "active fw-semibold" : "")"
+                 asp-controller="Home" asp-action="List">Ürünler</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link @(Is("Home","About") ? "active fw-semibold" : "")"
+                 asp-controller="Home" asp-action="About">Hakkımızda</a>
+            </li>
+          </ul>
+
+          <!-- Arama -->
+          <form class="d-flex me-3" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+            <button class="btn btn-outline-light" type="submit">Search</button>
+          </form>
+
+          <!-- Login/Register/Logout -->
+          @await Html.PartialAsync("_LoginPartial")
+        </div>
+      </div>
+    </nav>
+
+    @RenderBody()
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+      </div>
+    </footer>
+
+    <!-- Holder (opsiyonel) -->
+    <script src="~/theme/js/holder.min.js" asp-append-version="true"></script>
+
+    <!-- Bootstrap 5 JS (bundle) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+
+    @RenderSection("Scripts", required: false)
+  </body>
+</html>

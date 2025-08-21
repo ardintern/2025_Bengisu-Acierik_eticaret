@@ -1,0 +1,36 @@
+@using EcommerceWebSite.Models
+@model IEnumerable<ProductModel>
+
+<div class="row row-cols-5 row-cols-md-3 g-3">
+@foreach (var urun in Model)
+{
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <img src="@Url.Content($"~/Upload/{urun.Image}")"
+                 class="card-img-top" alt="@urun.Name"
+                 style="height:300px; object-fit:cover;">
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="@Url.Action("Details","Home", new { id = urun.Id })">
+                        @urun.Name
+                    </a>
+                </h5>
+                <p class="card-text pt-2 description">@urun.Description</p>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <small class="text-body-secondary product-price">
+                    <i class="fa-solid fa-turkish-lira-sign"></i> @urun.Price
+                </small>
+
+                <a href="@Url.Action("Details","Home", new { id = urun.Id })"
+                   class="btn btn-default btn-sm">
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    Ürünü incele
+                </a>
+            </div>
+        </div>
+    </div>
+}
+</div>

@@ -1,0 +1,66 @@
+@model IEnumerable<EcommerceWebSite.Entity.Product>
+@{
+    ViewData["Title"] = "Ürünler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container pb-5">
+    <h1>Ürünler</h1>
+    <hr />
+
+    <p>
+        <a asp-controller="Product" asp-action="Create" class="btn btn-primary">Yeni Ürün</a>
+    </p>
+
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.Image)</th>
+                <th>Kategori</th>
+                <th>@Html.DisplayNameFor(m => m.Name)</th>
+                <th>Fiyat</th>
+                <th>@Html.DisplayNameFor(m => m.IsHome)</th>
+                <th>@Html.DisplayNameFor(m => m.IsApproved)</th>
+                <th style="width:220px"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(item.Image))
+                    { <img src="~/Upload/@item.Image" width="70" alt="@item.Name" /> }
+                </td>
+                <td>@item.Category?.Name</td>
+                <td>@item.Name</td>
+                <td>@item.Price.ToString("c")</td>
+
+                <td>
+                    @(item.IsHome
+                        ? Html.Raw("<span class='badge text-bg-success'><i class='fa-regular fa-circle-check'></i> Evet</span>")
+                        : Html.Raw("<span class='badge text-bg-danger'><i class='fa-regular fa-circle-xmark'></i> Hayır</span>"))
+                </td>
+                <td>
+                    @(item.IsApproved
+                        ? Html.Raw("<span class='badge text-bg-success'><i class='fa-regular fa-circle-check'></i> Evet</span>")
+                        : Html.Raw("<span class='badge text-bg-danger'><i class='fa-regular fa-circle-xmark'></i> Hayır</span>"))
+                </td>
+
+                <td class="text-nowrap">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Güncelle</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm ms-2">Sil</a>
+
+                    @* ——— Sepete ekle: TEK POST form ——— *@
+                    @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { @class = "d-inline ms-2" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-success btn-sm">Sepete Ekle</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

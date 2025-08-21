@@ -1,0 +1,32 @@
+﻿@using EcommerceWebSite.Models
+@model IEnumerable<ProductModel>
+@{
+    ViewData["Title"] = "Index";
+    var productCount = Model?.Count() ?? 0;
+}
+
+<!-- jumbotron sınıfını geri ekledik; bg-primary'ı kaldırdık ki arka plan görselin görünsün -->
+<section class="jumbotron pb-15 text-white py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h1 class="display-5 fw-bold mb-3">Teknolojide yeni sezon</h1>
+        <p class="lead mb-4">
+          Laptop, kamera ve aksesuarlar tek adreste. Güvenli alışveriş, hızlı teslimat.
+          @if (productCount > 0)
+          {
+              <span class="opacity-75">Katalogda <strong>@productCount</strong> ürün var.</span>
+          }
+        </p>
+        <div class="d-flex gap-2">
+          <a asp-controller="Home" asp-action="List" class="btn btn-light btn-lg">Alışverişe Başla</a>
+          <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-light btn-lg">Sepeti Gör</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container pb-5" style="margin-top:-4rem;">
+  @await Html.PartialAsync("_ProductList", Model)
+</div>
